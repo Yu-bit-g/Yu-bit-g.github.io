@@ -20,6 +20,10 @@ export const site = {
   // 视频加载失败时自动隐藏，显示纯 CSS 水墨动态背景。
   heroVideo: '/videos/hero.mp4',
 
+  // 背景音乐：古琴《醉渔唱晚》· 演奏 CharlieHuang（CC BY-SA 3.0）
+  // 想换音乐：把新 mp3 覆盖到 public/audio/music.mp3，或改为自己的在线音频链接
+  music: '/audio/music.mp3',
+
   // 头像：留空 '' 时使用内置水墨人像插画（推荐）；
   // 想用自己的照片：将照片放到 public/images/avatar.jpg，然后改成 '/images/avatar.jpg'
   avatar: '',

@@ -144,3 +144,9 @@
   .links { display: none; }
   .brandNote { display: none; }
 }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}

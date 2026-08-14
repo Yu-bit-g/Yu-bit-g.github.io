@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { site } from '../config.js'
+import MusicToggle from './decorations/MusicToggle.jsx'
 import styles from './Navbar.module.css'
 
 const links = [
@@ -57,9 +58,12 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <a className={styles.cta} href='#contact'>
-            联系我
-          </a>
+          <div className={styles.actions}>
+            <MusicToggle />
+            <a className={styles.cta} href='#contact'>
+              联系我
+            </a>
+          </div>
         </div>
       </div>
       <span className={styles.progress} style={{ transform: `scaleX(${progress})` }} aria-hidden='true' />
