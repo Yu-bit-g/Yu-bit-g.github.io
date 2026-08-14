@@ -1,0 +1,404 @@
+.section {
+  padding: clamp(90px, 12vh, 150px) 0;
+  background: linear-gradient(180deg, #0d0d0c, #11110f);
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(26px, 3.4vw, 54px);
+}
+
+/* ---------- 卡片：1px 细边框 + 磨砂玻璃 ---------- */
+.card {
+  border: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: border-color 0.4s var(--ease), background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.card:hover {
+  border-color: rgba(107, 155, 122, 0.4);
+  background: rgba(22, 22, 19, 0.82);
+  box-shadow: var(--shadow-hover);
+}
+
+.card:hover .glow {
+  opacity: 1;
+}
+
+.inner {
+  position: relative;
+  display: block;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* 统一色调罩：让不同项目图片融合进整体氛围 */
+.media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(165deg, rgba(30, 43, 35, 0.36), rgba(107, 155, 122, 0.08) 55%, rgba(9, 9, 8, 0.2));
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease);
+}
+
+.card:hover .media::before {
+  opacity: 0.35;
+}
+
+/* 图片颗粒噪点 */
+.media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: var(--noise);
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.01);
+  filter: brightness(0.8) saturate(0.9);
+  transition: transform 0.6s var(--ease), filter 0.6s var(--ease);
+}
+
+.card:hover .media img {
+  transform: scale(1.03);
+  filter: brightness(0.95) saturate(1.02);
+}
+
+/* 国风序号水印 */
+.no {
+  position: absolute;
+  right: 14px;
+  bottom: 6px;
+  z-index: 3;
+  font-family: var(--font-brush);
+  font-size: 46px;
+  line-height: 1;
+  color: rgba(230, 226, 216, 0.1);
+  user-select: none;
+  transition: color 0.45s;
+}
+
+.card:hover .no {
+  color: rgba(163, 201, 168, 0.28);
+}
+
+.tag {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 3;
+  padding: 5px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--green-bright);
+  border: 1px solid rgba(107, 155, 122, 0.35);
+  background: rgba(11, 11, 10, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.zoom {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  z-index: 3;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  background: rgba(11, 11, 10, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.card:hover .zoom {
+  opacity: 1;
+  transform: none;
+}
+
+.body {
+  padding: 28px 16px 22px;
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+.desc {
+  margin-top: 12px;
+  color: var(--ink-dim);
+  font-size: 14px;
+  line-height: 2;
+  max-width: 600px;
+}
+
+/* 年份 · 地点 · 面积（等宽小字） */
+.meta {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+}
+
+.meta i {
+  font-style: normal;
+  color: rgba(196, 174, 124, 0.4);
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--green-bright);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  transition: letter-spacing 0.4s var(--ease);
+}
+
+.card:hover .more {
+  letter-spacing: 0.28em;
+}
+
+.more i {
+  font-style: normal;
+  transition: transform 0.3s var(--ease);
+}
+
+.card:hover .more i {
+  transform: translateX(4px);
+}
+
+.count {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+}
+
+.card:hover :global(.corner) {
+  opacity: 0.4;
+}
+
+/* ---------- 图集浮层 ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(11, 11, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: fadeIn 0.35s var(--ease);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalPanel {
+  width: min(1240px, 100%);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-strong);
+  background: rgba(18, 18, 16, 0.92);
+  animation: rise 0.45s var(--ease);
+}
+
+@keyframes rise {
+  from { transform: translateY(22px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.modalHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modalCat {
+  color: var(--green-bright);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+}
+
+.modalTitle {
+  margin-top: 6px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+}
+
+.close {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-dim);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.close:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+  background: rgba(107, 155, 122, 0.12);
+}
+
+.viewer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 28px;
+  min-height: 0;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.stage img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  background: #0b0b0a;
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  color: var(--ink-dim);
+  font-size: 13px;
+  letter-spacing: 0.26em;
+}
+
+.counter {
+  color: var(--green-bright);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.navBtn {
+  flex: none;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(107, 155, 122, 0.4);
+  border-radius: 50%;
+  background: rgba(18, 18, 16, 0.6);
+  color: var(--green-bright);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.navBtn:hover {
+  border-color: rgba(163, 201, 168, 0.6);
+  background: rgba(107, 155, 122, 0.12);
+}
+
+.thumbs {
+  display: flex;
+  gap: 10px;
+  padding: 16px 28px 22px;
+  border-top: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.thumbs button {
+  flex: none;
+  width: 96px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.55;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.thumbs button:hover {
+  opacity: 0.85;
+}
+
+.thumbs button.thumbActive {
+  opacity: 1;
+  border-color: var(--green-bright);
+}
+
+.thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 1000px) {
+  .grid { grid-template-columns: 1fr; }
+  .viewer { padding: 16px 12px; }
+  .stage img { max-height: 48vh; }
+}

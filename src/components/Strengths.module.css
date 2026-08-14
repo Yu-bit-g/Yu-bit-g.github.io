@@ -1,0 +1,117 @@
+.section {
+  padding: clamp(90px, 12vh, 150px) 0;
+  background:
+    radial-gradient(40% 32% at 10% 88%, rgba(107, 155, 122, 0.05), transparent 60%),
+    linear-gradient(180deg, #0f0f0d, #121210);
+  border-top: 1px solid var(--line);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(18px, 2.2vw, 30px);
+}
+
+.card {
+  position: relative;
+  padding: 38px 28px 34px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.card:hover {
+  background: rgba(23, 23, 20, 0.85);
+  border-color: rgba(107, 155, 122, 0.4);
+  box-shadow: var(--shadow-hover);
+}
+
+/* 顶部绿色渐变细线 */
+.line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(107, 155, 122, 0.7) 32%, rgba(163, 201, 168, 0.9) 55%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--ease);
+}
+
+.card:hover .line {
+  transform: scaleX(1);
+}
+
+/* 背景编号水印 */
+.card::after {
+  content: attr(data-no);
+  position: absolute;
+  right: 22px;
+  top: 0;
+  font-family: var(--font-brush);
+  font-size: 48px;
+  color: rgba(107, 155, 122, 0.06);
+  user-select: none;
+  transition: color 0.45s;
+}
+
+.card:hover::after {
+  color: rgba(107, 155, 122, 0.12);
+}
+
+.iconRing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border: 1px solid rgba(107, 155, 122, 0.35);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(107, 155, 122, 0.12), rgba(30, 43, 35, 0.1));
+  transition: border-color 0.4s;
+}
+
+.card:hover .iconRing {
+  border-color: rgba(163, 201, 168, 0.6);
+}
+
+.icon {
+  display: inline-flex;
+  color: var(--green-bright);
+}
+
+.en {
+  margin-top: 18px;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+}
+
+.title {
+  margin-top: 6px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+}
+
+.desc {
+  margin-top: 14px;
+  color: var(--ink-dim);
+  font-size: 13.5px;
+  line-height: 1.95;
+}
+
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}

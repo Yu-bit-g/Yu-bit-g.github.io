@@ -1,0 +1,146 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease), backdrop-filter 0.4s;
+}
+
+/* 滚动超过 60px：磨砂玻璃 */
+.scrolled {
+  background: var(--glass);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(20px) saturate(1.15);
+  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 74px;
+  transition: height 0.4s var(--ease);
+}
+
+.scrolled .inner { height: 64px; }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-bright);
+  box-shadow: 0 0 0 3px rgba(163, 201, 168, 0.12);
+}
+
+.brandNote {
+  margin-left: 10px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  transform: translateY(1px);
+}
+
+.links {
+  display: flex;
+  gap: clamp(26px, 3.2vw, 52px);
+}
+
+.links a {
+  position: relative;
+  padding: 6px 2px;
+  color: var(--ink-dim);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: color 0.3s, letter-spacing 0.4s var(--ease);
+}
+
+.links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(107, 155, 122, 0.6);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease);
+}
+
+.links a:hover {
+  color: var(--ink);
+  letter-spacing: 0.18em;
+}
+
+.links a.active {
+  color: var(--ink);
+}
+
+.links a.active::after,
+.links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.cta {
+  padding: 9px 26px;
+  border: 1px solid rgba(107, 155, 122, 0.45);
+  border-radius: 2px;
+  color: var(--green-bright);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  background: rgba(107, 155, 122, 0.08);
+  transition: all 0.4s var(--ease);
+}
+
+.cta:hover {
+  background: rgba(107, 155, 122, 0.16);
+  border-color: rgba(163, 201, 168, 0.6);
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  box-shadow: inset 0 0 0 1px rgba(163, 201, 168, 0.15);
+}
+
+/* 阅读进度细线 */
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--green), var(--green-bright));
+  transform-origin: left;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.scrolled .progress { opacity: 0.9; }
+
+@media (max-width: 860px) {
+  .links { display: none; }
+  .brandNote { display: none; }
+}
