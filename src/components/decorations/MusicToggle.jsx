@@ -3,36 +3,67 @@ import { site } from '../../config.js'
 import styles from './MusicToggle.module.css'
 
 export default function MusicToggle() {
-  const [playing, setPlaying] = useState(false)
+  // 默认开启：进入页面立即尝试播放；若被浏览器拦截，
+  // 在访客第一次点击 / 触屏 / 按键时自动恢复播放。
+  const [playing, setPlaying] = useState(true)
   const audioRef = useRef(null)
+  const detachRef = useRef(() => {})
+
+  const play = async () => {
+    const audio = audioRef.current
+    if (!audio) return false
+    try {
+      await audio.play()
+      setPlaying(true)
+      return true
+    } catch {
+      setPlaying(false)
+      return false
+    }
+  }
 
   useEffect(() => {
     const audio = new Audio(site.music)
     audio.loop = true
-    audio.preload = 'none'
+    audio.preload = 'auto'
     audio.volume = 0.4
     audioRef.current = audio
+
+    const detach = () => {
+      window.removeEventListener('pointerdown', onFirst)
+      window.removeEventListener('touchstart', onFirst)
+      window.removeEventListener('keydown', onFirst)
+    }
+    detachRef.current = detach
+
+    const onFirst = () => {
+      if (!audioRef.current || !audioRef.current.paused) return
+      play().then((ok) => { if (ok) detach() })
+    }
+
+    play().then((ok) => { if (ok) detach() })
+
+    window.addEventListener('pointerdown', onFirst, { passive: true })
+    window.addEventListener('touchstart', onFirst, { passive: true })
+    window.addEventListener('keydown', onFirst)
+
     return () => {
+      detach()
       audio.pause()
       audio.removeAttribute('src')
       audio.load()
     }
   }, [])
 
-  const toggle = async () => {
+  const toggle = () => {
     const audio = audioRef.current
     if (!audio) return
-    if (playing) {
+    if (playing && !audio.paused) {
       audio.pause()
       setPlaying(false)
       return
     }
-    try {
-      await audio.play()
-      setPlaying(true)
-    } catch {
-      setPlaying(false)
-    }
+    play()
   }
 
   return (
