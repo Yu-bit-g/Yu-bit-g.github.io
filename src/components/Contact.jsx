@@ -87,7 +87,7 @@ export default function Contact() {
       <footer className={styles.footer}>
         <div className={`container ${styles.footerInner}`}>
           <span>© 2026 {site.name} · {site.brand} 保留所有权利</span>
-          <span className={styles.footerCredit}>音乐 · 古琴《醉渔唱晚》 CharlieHuang · CC BY-SA 3.0</span>
+          <span className={styles.footerCredit}>音乐 · 《太聪明》</span>
           <span className={styles.footerRight}>山水之间 · 营造之境</span>
         </div>
       </footer>
