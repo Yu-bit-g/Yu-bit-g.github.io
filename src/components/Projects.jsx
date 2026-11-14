@@ -3,6 +3,8 @@ import { projects } from '../data/content.js'
 import Reveal from './Reveal.jsx'
 import SectionHeading from './decorations/SectionHeading.jsx'
 import CornerMark from './decorations/CornerMark.jsx'
+import ParticleField from './decorations/ParticleField.jsx'
+import CursorGlow from './decorations/CursorGlow.jsx'
 import styles from './Projects.module.css'
 
 const asImage = (image) => (typeof image === 'string' ? { src: image } : image)
@@ -15,6 +17,7 @@ export default function Projects() {
   const closeRef = useRef(null)
 
   const activeProject = projects[activeIndex]
+  const activeCover = asImage(activeProject.cover)
   const openProject = openIndex === null ? null : projects[openIndex]
   const current = openProject ? asImage(openProject.images[galleryIndex]) : null
 
@@ -62,7 +65,9 @@ export default function Projects() {
 
   return (
     <section className={styles.section} id='projects'>
-      <div className='container'>
+      <ParticleField className={styles.particles} density={0.52} burst={14} />
+
+      <div className={`container ${styles.content}`}>
         <SectionHeading
           index='02'
           eyebrow='精选项目'
@@ -119,7 +124,10 @@ export default function Projects() {
               onClick={() => openProjectAt(activeIndex)}
               aria-label={`打开 ${activeProject.title} 项目图集`}
             >
-              <span className={styles.previewFrame}>
+              <span
+                className={styles.previewFrame}
+                style={{ backgroundImage: `url(${activeCover.thumb || activeCover.src})` }}
+              >
                 {projects.map((project, index) => {
                   const cover = asImage(project.cover)
                   return (
@@ -140,6 +148,7 @@ export default function Projects() {
                   )
                 })}
                 <span className={styles.previewShade} aria-hidden='true' />
+                <CursorGlow className={styles.previewGlow} />
                 <span className={styles.previewLabel}>
                   <span>SELECTED WORKS</span>
                   <span>{String(activeIndex + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
@@ -202,6 +211,7 @@ export default function Projects() {
                   height={current.height}
                   alt={`${openProject.title} - ${current.label}`}
                   decoding='async'
+                  style={{ backgroundImage: `url(${current.thumb || current.src})` }}
                 />
                 <p className={styles.caption}>
                   {current.label}

@@ -4,7 +4,7 @@ import Reveal from './Reveal.jsx'
 import SectionHeading from './decorations/SectionHeading.jsx'
 import styles from './Studies.module.css'
 
-const groupOrder = ['图纸与彩平', '场景渲染', '角色设定', '角色 · 视频']
+const groupOrder = ['图纸与彩平', '场景渲染', '短剧美术', '角色设定', '角色 · 视频']
 
 export default function Studies() {
   const [index, setIndex] = useState(null)
@@ -39,7 +39,7 @@ export default function Studies() {
           index='03'
           eyebrow='AI 创作'
           title='智能愿景 · AI 共创'
-          description='以 DeepSeek、ChatGPT、Codex 与 Claude Code 构建独立工作流，从图纸表达、场景渲染到视频分镜与角色设定——全程 AI 辅助创作。'
+          description='以 DeepSeek、ChatGPT、Codex 与 Claude Code 构建独立工作流，从图纸表达、场景渲染到短剧美术、角色设定与视频分镜——全程 AI 辅助创作。'
         />
 
         <div className={styles.groups}>

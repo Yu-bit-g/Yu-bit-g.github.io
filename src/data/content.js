@@ -208,6 +208,11 @@ export const studies = [
   { src: '/images/studies/st32-ai-birdview.jpg', label: '村落更新 · 鸟瞰渲染', group: '场景渲染' },
   { src: '/images/studies/st40-ai-playground.jpg', label: '儿童场地 · 鸟瞰渲染', group: '场景渲染' },
   { src: '/images/studies/st41-ai-courtyard.jpg', label: '中式庭院 · AI 渲染', group: '场景渲染' },
+  // —— 短剧美术（E 盘《治愈》项目精选场景） ——
+  { ...asset('/images/studies/st54-ai-drama-alley', 1600, 900, '梧桐巷 · 午后街景', 1600), group: '短剧美术' },
+  { ...asset('/images/studies/st55-ai-drama-workshop', 1600, 900, '拾光修复铺 · 室内场景', 1600), group: '短剧美术' },
+  { ...asset('/images/studies/st56-ai-drama-storefront', 1600, 900, '拾光修复铺 · 夜景立面', 1600), group: '短剧美术' },
+  { ...asset('/images/studies/st57-ai-drama-plaza', 1600, 1200, '古树广场 · 夜色空间', 1600), group: '短剧美术' },
   // —— 角色设定 ——
   { ...asset('/images/studies/st50-ai-char-grandpa', 1491, 1055, '姥爷 · 角色设定', 1600), group: '角色设定' },
   { ...asset('/images/studies/st51-ai-char-wanqing', 1491, 1055, '林晚晴 · 角色设定', 1600), group: '角色设定' },
