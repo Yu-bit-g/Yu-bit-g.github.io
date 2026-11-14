@@ -1,6 +1,7 @@
 import { site } from '../config.js'
 import Seal from './decorations/Seal.jsx'
 import CursorGlow from './decorations/CursorGlow.jsx'
+import ParticleField from './decorations/ParticleField.jsx'
 import styles from './Hero.module.css'
 
 export default function Hero() {
@@ -33,6 +34,9 @@ export default function Hero() {
       <div className={styles.gridOverlay} aria-hidden='true' />
       <div className={styles.vignette} aria-hidden='true' />
 
+      {/* 触摸 / 鼠标互动墨粒 */}
+      <ParticleField className={styles.particles} />
+
       {/* 内嵌细线画框 */}
       <div className={styles.frame} aria-hidden='true'>
         <i className={styles.frameCorner} data-pos='tl' />
@@ -61,6 +65,11 @@ export default function Hero() {
         <div className={styles.mark} aria-hidden='true'>
           <i />
         </div>
+        <p className={styles.interactionHint}>
+          移动 / 轻触
+          <span aria-hidden='true'>·</span>
+          唤醒墨粒
+        </p>
       </div>
 
       <a className={styles.scroll} href='#about'>

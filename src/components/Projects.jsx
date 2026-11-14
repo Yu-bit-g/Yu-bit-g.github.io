@@ -1,38 +1,64 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { projects } from '../data/content.js'
 import Reveal from './Reveal.jsx'
 import SectionHeading from './decorations/SectionHeading.jsx'
 import CornerMark from './decorations/CornerMark.jsx'
-import CursorGlow from './decorations/CursorGlow.jsx'
 import styles from './Projects.module.css'
 
-export default function Projects() {
-  const [active, setActive] = useState(null)
-  const [index, setIndex] = useState(0)
+const asImage = (image) => (typeof image === 'string' ? { src: image } : image)
 
-  const openProject = (project) => {
-    setActive(project)
-    setIndex(0)
+export default function Projects() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [openIndex, setOpenIndex] = useState(null)
+  const [galleryIndex, setGalleryIndex] = useState(0)
+  const dialogRef = useRef(null)
+  const closeRef = useRef(null)
+
+  const activeProject = projects[activeIndex]
+  const openProject = openIndex === null ? null : projects[openIndex]
+  const current = openProject ? asImage(openProject.images[galleryIndex]) : null
+
+  const openProjectAt = (index) => {
+    setOpenIndex(index)
+    setGalleryIndex(0)
   }
 
-  const close = () => setActive(null)
+  const close = () => setOpenIndex(null)
 
   useEffect(() => {
-    if (!active) return undefined
-    const onKey = (event) => {
-      if (event.key === 'Escape') close()
-      if (event.key === 'ArrowRight') setIndex((i) => (i + 1) % active.images.length)
-      if (event.key === 'ArrowLeft') setIndex((i) => (i - 1 + active.images.length) % active.images.length)
+    const dialog = dialogRef.current
+    if (!dialog) return
+    if (openProject && !dialog.open) {
+      dialog.showModal()
+      requestAnimationFrame(() => closeRef.current?.focus())
+    } else if (!openProject && dialog.open) {
+      dialog.close()
     }
+  }, [openProject])
+
+  useEffect(() => {
+    if (!openProject) return undefined
     document.body.style.overflow = 'hidden'
+    const onKey = (event) => {
+      if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        setGalleryIndex((i) => (i + 1) % openProject.images.length)
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        setGalleryIndex((i) => (i - 1 + openProject.images.length) % openProject.images.length)
+      }
+    }
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', onKey)
     }
-  }, [active])
+  }, [openProject])
 
-  const current = active ? active.images[index] : null
+  const handleDialogClick = (event) => {
+    if (event.target === dialogRef.current) close()
+  }
 
   return (
     <section className={styles.section} id='projects'>
@@ -41,89 +67,152 @@ export default function Projects() {
           index='02'
           eyebrow='精选项目'
           title='山水入卷 · 项目精选'
-          description='课程设计与竞赛实践中的完整成果——点击卡片，查看每个项目的图纸细节。'
+          description='课程设计、竞赛与校企实践中的完整成果。移动光标浏览项目索引，点击进入完整图集。'
         />
 
-        <div className={styles.grid}>
-          {projects.map((project, cardIndex) => (
-            <Reveal key={project.id} delay={(cardIndex % 2) * 110} className={styles.card}>
-              <div
-                className={styles.inner}
-                role='button'
-                tabIndex={0}
-                onClick={() => openProject(project)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') openProject(project)
-                }}
-              >
-                <CursorGlow className={styles.glow} />
-                <div className={styles.media}>
-                  {/* 项目图片：public/images/projects/ 下替换文件即可 */}
-                  <img src={project.cover} alt={project.title} loading='lazy' />
-                  <span className={styles.no} aria-hidden='true'>{project.no}</span>
-                  <span className={styles.tag}>{project.category}</span>
-                  <span className={styles.zoom} aria-hidden='true'>展开查看 ＋</span>
-                </div>
-                <div className={styles.body}>
-                  <h3 className={styles.name}>{project.title}</h3>
-                  <p className={styles.desc}>{project.description}</p>
-                  <p className={styles.meta}>
-                    <span>{project.year}</span>
-                    <i aria-hidden='true'>·</i>
-                    <span>{project.location}</span>
-                    <i aria-hidden='true'>·</i>
-                    <span>{project.area}</span>
-                  </p>
-                  <div className={styles.foot}>
-                    <span className={styles.more}>
-                      查看项目
-                      <i aria-hidden='true'>→</i>
+        <Reveal className={styles.indexWrap}>
+          <div className={styles.list}>
+            {projects.map((project, index) => {
+              const cover = asImage(project.cover)
+              return (
+                <button
+                  key={project.id}
+                  type='button'
+                  className={`${styles.row} ${index === activeIndex ? styles.rowActive : ''}`}
+                  onPointerEnter={() => setActiveIndex(index)}
+                  onFocus={() => setActiveIndex(index)}
+                  onClick={() => openProjectAt(index)}
+                  aria-label={`查看项目：${project.title}`}
+                >
+                  <span className={styles.rowNo}>{String(index + 1).padStart(2, '0')}</span>
+                  <span className={styles.rowMain}>
+                    <span className={styles.rowMeta}>
+                      {project.year}
+                      <i aria-hidden='true'>·</i>
+                      {project.category}
                     </span>
-                    <span className={styles.count}>{project.images.length} 图</span>
-                  </div>
-                </div>
+                    <span className={styles.rowTitle}>{project.title}</span>
+                    <span className={styles.rowDescWrap}>
+                      <span className={styles.rowDesc}>{project.description}</span>
+                    </span>
+                  </span>
+                  <span className={styles.rowSide}>
+                    <span>{project.location}</span>
+                    <span>{project.area}</span>
+                  </span>
+                  <span className={styles.rowArrow} aria-hidden='true'>↗</span>
+                  <span className={styles.rowThumb} aria-hidden='true'>
+                    <span
+                      className={styles.rowThumbImg}
+                      style={{ backgroundImage: `url(${cover.thumb || cover.src})` }}
+                    />
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
+          <div className={styles.preview}>
+            <button
+              type='button'
+              className={styles.previewBtn}
+              onClick={() => openProjectAt(activeIndex)}
+              aria-label={`打开 ${activeProject.title} 项目图集`}
+            >
+              <span className={styles.previewFrame}>
+                {projects.map((project, index) => {
+                  const cover = asImage(project.cover)
+                  return (
+                    <img
+                      key={project.id}
+                      src={cover.src}
+                      srcSet={cover.srcSet}
+                      sizes='(max-width: 1000px) 100vw, 46vw'
+                      width={cover.width}
+                      height={cover.height}
+                      alt=''
+                      aria-hidden={index === activeIndex ? undefined : 'true'}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding='async'
+                      fetchPriority={index === activeIndex ? 'high' : 'low'}
+                      className={`${styles.previewImg} ${index === activeIndex ? styles.previewImgActive : ''}`}
+                    />
+                  )
+                })}
+                <span className={styles.previewShade} aria-hidden='true' />
+                <span className={styles.previewLabel}>
+                  <span>SELECTED WORKS</span>
+                  <span>{String(activeIndex + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
+                </span>
+                <span className={styles.previewInfo}>
+                  <span className={styles.previewCat}>{activeProject.category}</span>
+                  <span className={styles.previewTitle}>{activeProject.title}</span>
+                  <span className={styles.previewMeta}>
+                    {activeProject.year} · {activeProject.location} · {activeProject.area}
+                  </span>
+                </span>
+                <span className={styles.previewAction}>查看完整图集 <i aria-hidden='true'>→</i></span>
+                <CornerMark position='tl' />
                 <CornerMark position='tr' />
                 <CornerMark position='bl' />
-              </div>
-            </Reveal>
-          ))}
-        </div>
+                <CornerMark position='br' />
+              </span>
+            </button>
+          </div>
+        </Reveal>
       </div>
 
-      {/* ---------- 项目图集浮层 ---------- */}
-      {active && (
-        <div className={styles.modal} onClick={close} role='dialog' aria-modal='true' aria-label={active.title}>
-          <div className={styles.modalPanel} onClick={(event) => event.stopPropagation()}>
-            <div className={styles.modalHead}>
+      <dialog
+        ref={dialogRef}
+        className={styles.dialog}
+        onClose={close}
+        onClick={handleDialogClick}
+        aria-label={openProject ? openProject.title : '项目图集'}
+      >
+        {openProject && current && (
+          <div className={styles.panel}>
+            <div className={styles.panelHead}>
               <div>
-                <p className={styles.modalCat}>{active.category}</p>
-                <h3 className={styles.modalTitle}>{active.title}</h3>
+                <p className={styles.panelCat}>{openProject.category}</p>
+                <h3 className={styles.panelTitle}>{openProject.title}</h3>
               </div>
-              <button className={styles.close} onClick={close} aria-label='关闭'>
-                ✕
-              </button>
+              <div className={styles.panelHeadRight}>
+                <span className={styles.panelMeta}>
+                  {openProject.year} · {openProject.location} · {openProject.area}
+                </span>
+                <button ref={closeRef} className={styles.close} onClick={close} aria-label='关闭图集'>✕</button>
+              </div>
             </div>
 
             <div className={styles.viewer}>
               <button
                 className={styles.navBtn}
-                onClick={() => setIndex((i) => (i - 1 + active.images.length) % active.images.length)}
+                onClick={() => setGalleryIndex((i) => (i - 1 + openProject.images.length) % openProject.images.length)}
                 aria-label='上一张'
               >
                 ‹
               </button>
               <div className={styles.stage}>
-                <img src={current.src} alt={`${active.title} - ${current.label}`} />
+                <img
+                  key={current.src}
+                  src={current.src}
+                  srcSet={current.srcSet}
+                  sizes='(max-width: 900px) 92vw, 75vw'
+                  width={current.width}
+                  height={current.height}
+                  alt={`${openProject.title} - ${current.label}`}
+                  decoding='async'
+                />
                 <p className={styles.caption}>
                   {current.label}
                   <span className={styles.counter}>
-                    {String(index + 1).padStart(2, '0')} / {String(active.images.length).padStart(2, '0')}
+                    {String(galleryIndex + 1).padStart(2, '0')} / {String(openProject.images.length).padStart(2, '0')}
                   </span>
                 </p>
               </div>
               <button
                 className={styles.navBtn}
-                onClick={() => setIndex((i) => (i + 1) % active.images.length)}
+                onClick={() => setGalleryIndex((i) => (i + 1) % openProject.images.length)}
                 aria-label='下一张'
               >
                 ›
@@ -131,20 +220,24 @@ export default function Projects() {
             </div>
 
             <div className={styles.thumbs}>
-              {active.images.map((image, i) => (
-                <button
-                  key={image.src}
-                  className={i === index ? styles.thumbActive : ''}
-                  onClick={() => setIndex(i)}
-                  aria-label={`查看 ${image.label}`}
-                >
-                  <img src={image.src} alt={image.label} loading='lazy' />
-                </button>
-              ))}
+              {openProject.images.map((image, index) => {
+                const item = asImage(image)
+                return (
+                  <button
+                    key={item.src}
+                    className={index === galleryIndex ? styles.thumbActive : ''}
+                    onClick={() => setGalleryIndex(index)}
+                    aria-label={`查看 ${item.label}`}
+                    aria-current={index === galleryIndex ? 'true' : undefined}
+                  >
+                    <img src={item.thumb || item.src} alt='' loading='lazy' decoding='async' />
+                  </button>
+                )
+              })}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </dialog>
     </section>
   )
 }

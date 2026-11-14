@@ -142,10 +142,15 @@
   background: radial-gradient(circle, rgba(107, 155, 122, 0.05), transparent 64%);
 }
 
+/* ---------- 触摸 / 鼠标互动墨粒 ---------- */
+.particles {
+  opacity: 0.86;
+}
+
 /* ---------- 内容 ---------- */
 .content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -273,13 +278,30 @@
   animation: pulse 3s ease-in-out infinite;
 }
 
+.interactionHint {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(230, 226, 216, 0.42);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  animation: fadeOnly 1s var(--ease) 1.18s backwards;
+}
+
+.interactionHint span {
+  color: var(--green-bright);
+  opacity: 0.8;
+}
+
 /* ---------- 向下滚动提示 ---------- */
 .scroll {
   position: absolute;
   left: 50%;
   bottom: 38px;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -317,7 +339,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 2;
+  z-index: 3;
   writing-mode: vertical-rl;
   font-family: var(--font-brush);
   font-size: 15px;

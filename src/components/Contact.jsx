@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { site } from '../config.js'
 import Reveal from './Reveal.jsx'
 import Icon from './decorations/Icon.jsx'
+import ParticleField from './decorations/ParticleField.jsx'
 import styles from './Contact.module.css'
 
 const socialIcons = {
@@ -39,6 +40,8 @@ export default function Contact() {
           <path d='M0 300 L0 250 L210 190 L420 252 L640 168 L860 262 L1090 196 L1300 252 L1440 216 L1440 300 Z' />
         </svg>
       </div>
+
+      <ParticleField className={styles.particles} density={0.55} burst={12} />
 
       <div className={`container ${styles.inner}`}>
         <Reveal className={styles.content}>
@@ -80,7 +83,7 @@ export default function Contact() {
             </button>
           </div>
 
-          <p className={styles.hint}>点击「微信联系」复制微信号 · 期待项目合作与实习机会</p>
+          <p className={styles.hint}>点击复制微信号 · 期待合作与实习机会</p>
         </Reveal>
       </div>
 

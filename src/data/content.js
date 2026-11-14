@@ -1,9 +1,56 @@
 // ==========================================================
 //  页面内容数据：项目 / 数据卡片 / 能力卡片
-//  图片都在 public/images/projects/ 下，直接改文件名即可替换
+//  图片都在 public/images/projects/ 下，直接改文件名即可替换（支持 WebP 多尺寸）
 // ==========================================================
 
+// 响应式图片：base 为不带尺寸后缀的路径，生成 640 / 1200 / 1920 三档
+const asset = (base, width, height, label, max = 1920) => ({
+  src: `${base}-1200.webp`,
+  srcSet: `${base}-640.webp 640w, ${base}-1200.webp 1200w, ${base}-${max}.webp ${max}w`,
+  thumb: `${base}-640.webp`,
+  width,
+  height,
+  label,
+})
+
 export const projects = [
+  {
+    id: 'wenluo-yuntuo',
+    year: '2026',
+    location: '河北 · 黄骅',
+    area: '文昌湖半岛',
+    category: '园林建筑 / 文化景观',
+    title: '文络 · 云拓',
+    description: '以黄骅传统文化的数字化转译为线索，在文昌湖半岛组织茶室、庭院、展陈与滨水平台，让地方文脉在当代园林建筑中重新生长。',
+    cover: asset('/images/projects/wenluo/wenluo-plan', 1626, 967, '文络 · 云拓'),
+    images: [
+      asset('/images/projects/wenluo/wenluo-bird', 1448, 1086, '整体鸟瞰'),
+      asset('/images/projects/wenluo/wenluo-cover', 1448, 1086, '中央庭院'),
+      asset('/images/projects/wenluo/wenluo-courtyard', 1448, 1086, '廊下庭院'),
+      asset('/images/projects/wenluo/wenluo-hall', 1448, 1086, '茶室通厅'),
+      asset('/images/projects/wenluo/wenluo-tea', 1448, 1086, '茶席空间'),
+      asset('/images/projects/wenluo/wenluo-counter', 1448, 1086, '接待与展陈'),
+      asset('/images/projects/wenluo/wenluo-section', 2172, 724, '纵剖面'),
+      asset('/images/projects/wenluo/wenluo-board', 4677, 6622, '完整展板'),
+    ],
+  },
+  {
+    id: 'fushu-accessible',
+    year: '2026',
+    location: '河北 · 沧州',
+    area: '校园附属绿地',
+    category: '城市街道 / AI 感知设计',
+    title: '感智 · 无障碍',
+    description: '面向特殊群体的 AI 感知式城市街道景观空间重构，以无障碍、全龄友好、感官疗愈与智慧交互为线索，建立从空间策略到专项系统的完整设计。',
+    cover: asset('/images/projects/fushu/fushu-cover', 4800, 3200, '总体空间策略'),
+    images: [
+      asset('/images/projects/fushu/fushu-plan', 2172, 724, '彩色总平面'),
+      asset('/images/projects/fushu/fushu-access', 4800, 3200, '全龄友好与无障碍'),
+      asset('/images/projects/fushu/fushu-smart-space', 4800, 3200, '智慧感知与空间回应'),
+      asset('/images/projects/fushu/fushu-smart', 1536, 1024, '智慧服务与交互'),
+      asset('/images/projects/fushu/fushu-night', 1536, 1024, '夜景照明与时段'),
+    ],
+  },
   {
     id: 'pocket-park',
     year: '2025',
@@ -112,7 +159,7 @@ export const projects = [
 ]
 
 export const stats = [
-  { value: '05', suffix: '+', label: '课程项目成果' },
+  { value: '08', suffix: '+', label: '课程项目成果' },
   { value: '02', suffix: '', label: '校企合作实践' },
   { value: '04', suffix: '+', label: 'AI 工具链' },
   { value: '01', suffix: '', label: '设计竞赛获奖' },
@@ -161,6 +208,11 @@ export const studies = [
   { src: '/images/studies/st32-ai-birdview.jpg', label: '村落更新 · 鸟瞰渲染', group: '场景渲染' },
   { src: '/images/studies/st40-ai-playground.jpg', label: '儿童场地 · 鸟瞰渲染', group: '场景渲染' },
   { src: '/images/studies/st41-ai-courtyard.jpg', label: '中式庭院 · AI 渲染', group: '场景渲染' },
+  // —— 角色设定 ——
+  { ...asset('/images/studies/st50-ai-char-grandpa', 1491, 1055, '姥爷 · 角色设定', 1600), group: '角色设定' },
+  { ...asset('/images/studies/st51-ai-char-wanqing', 1491, 1055, '林晚晴 · 角色设定', 1600), group: '角色设定' },
+  { ...asset('/images/studies/st52-ai-char-zhixia', 1536, 1024, '林知夏 · 角色设定', 1600), group: '角色设定' },
+  { ...asset('/images/studies/st53-ai-char-qiuyun', 1491, 1055, '沈秋云 · 角色设定', 1600), group: '角色设定' },
   // —— 角色 · 视频 ——
   { src: '/images/studies/st35-ai-video-set.jpg', label: '大厅场景九宫格 · 一致性', group: '角色 · 视频' },
   { src: '/images/studies/st44-ai-bedroom.jpg', label: '卧室场景九宫格 · 光影', group: '角色 · 视频' },

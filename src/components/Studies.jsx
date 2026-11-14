@@ -4,7 +4,7 @@ import Reveal from './Reveal.jsx'
 import SectionHeading from './decorations/SectionHeading.jsx'
 import styles from './Studies.module.css'
 
-const groupOrder = ['图纸与彩平', '场景渲染', '角色 · 视频']
+const groupOrder = ['图纸与彩平', '场景渲染', '角色设定', '角色 · 视频']
 
 export default function Studies() {
   const [index, setIndex] = useState(null)
@@ -61,7 +61,16 @@ export default function Studies() {
                       onClick={() => setIndex(studies.findIndex((item) => item.src === study.src))}
                       aria-label={`查看 AI 作品：${study.label}`}
                     >
-                      <img src={study.src} alt={study.label} loading='lazy' />
+                      <img
+                        src={study.thumb || study.src}
+                        srcSet={study.srcSet}
+                        sizes='(max-width: 600px) 100vw, (max-width: 900px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                        width={study.width}
+                        height={study.height}
+                        alt={study.label}
+                        loading='lazy'
+                        decoding='async'
+                      />
                       <span className={styles.chip}>{study.group}</span>
                       <span className={styles.overlay} aria-hidden='true' />
                       <span className={styles.caption}>{study.label}</span>
@@ -95,7 +104,15 @@ export default function Studies() {
                 ‹
               </button>
               <div className={styles.stage}>
-                <img src={current.src} alt={current.label} />
+                <img
+                  src={current.src}
+                  srcSet={current.srcSet}
+                  sizes='(max-width: 900px) 92vw, 70vw'
+                  width={current.width}
+                  height={current.height}
+                  alt={current.label}
+                  decoding='async'
+                />
                 <p className={styles.captionLine}>
                   {current.label}
                   <span className={styles.counter}>

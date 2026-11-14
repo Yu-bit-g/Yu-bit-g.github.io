@@ -3,7 +3,7 @@ export default function Seal({ text = '舜', size = 56, className = '' }) {
   return (
     <span
       className={`seal ${className}`.trim()}
-      style={{ width: size, height: size, fontSize: Math.round(size * 0.5) }}
+      style={{ width: size, height: size, fontSize: Math.round(size * 0.46) }}
       aria-hidden='true'
     >
       {text}
