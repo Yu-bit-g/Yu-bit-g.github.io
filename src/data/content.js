@@ -45,10 +45,17 @@ export const projects = [
     cover: asset('/images/projects/fushu/fushu-cover', 4800, 3200, '总体空间策略'),
     images: [
       asset('/images/projects/fushu/fushu-plan', 2172, 724, '彩色总平面'),
+      asset('/images/projects/fushu/fushu-topo-sensory', 4800, 3200, '功能拓扑 · 感知与疗愈'),
+      asset('/images/projects/fushu/fushu-topo-shared', 4800, 3200, '功能拓扑 · 共享与创想'),
       asset('/images/projects/fushu/fushu-access', 4800, 3200, '全龄友好与无障碍'),
       asset('/images/projects/fushu/fushu-smart-space', 4800, 3200, '智慧感知与空间回应'),
+      asset('/images/projects/fushu/fushu-topo-ecology', 4800, 3200, '功能拓扑 · 生态与舒适'),
+      asset('/images/projects/fushu/fushu-detail-sensory', 1536, 1024, '专项 · 感官体验与情绪支持'),
+      asset('/images/projects/fushu/fushu-detail-water', 1536, 1024, '专项 · 水景与亲水界面'),
+      asset('/images/projects/fushu/fushu-detail-structure', 1536, 1024, '专项 · 雕塑与建筑构筑物'),
       asset('/images/projects/fushu/fushu-smart', 1536, 1024, '智慧服务与交互'),
       asset('/images/projects/fushu/fushu-night', 1536, 1024, '夜景照明与时段'),
+      asset('/images/projects/fushu/fushu-view-plaza', 1672, 941, '场景效果 · 街角客厅'),
     ],
   },
   {
