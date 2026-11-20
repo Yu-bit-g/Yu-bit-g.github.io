@@ -249,6 +249,16 @@ export default function Projects() {
                   <span className={styles.counter}>
                     {String(galleryIndex + 1).padStart(2, '0')} / {String(openProject.images.length).padStart(2, '0')}
                   </span>
+                  {current.height / current.width > 1.3 && (
+                    <a
+                      className={styles.origLink}
+                      href={current.full}
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      原图 ↗
+                    </a>
+                  )}
                 </p>
               </div>
               <button

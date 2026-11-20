@@ -8,6 +8,7 @@ const asset = (base, width, height, label, max = 1920) => ({
   src: `${base}-1200.webp`,
   srcSet: `${base}-640.webp 640w, ${base}-1200.webp 1200w, ${base}-${max}.webp ${max}w`,
   thumb: `${base}-640.webp`,
+  full: `${base}-${max}.webp`,
   width,
   height,
   label,
