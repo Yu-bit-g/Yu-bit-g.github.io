@@ -71,10 +71,12 @@ landscape-portfolio/
 
 ## 页面说明
 
-- 单页平滑滚动：首页 → 关于 → 项目 → 优势 → 联系
+- 单页平滑滚动：首页 → 关于 → 项目 → 优势 → 联系；桌面端由 Lenis 提供惯性，`prefers-reduced-motion` 下自动关闭
 - 导航栏滚动 32px 后出现半透明磨砂玻璃效果
 - 项目区：左侧编辑式索引，悬停 / 键盘聚焦切换右侧粘性大图；点击打开原生 `<dialog>` 图集
+- 项目预览 → 图集：支持 View Transitions 的浏览器使用共享元素放大转场，其余浏览器直接打开
 - 项目图集：键盘 ← → 切换，Esc 关闭，支持缩略图快速定位
+- 标题入场：SplitType 逐字遮罩上浮，支持缩放后重新拆分
 - 触摸互动：Hero 与 Contact 的 Canvas 墨粒场支持鼠标移动、按住吸引与触摸点按爆发
 - 图片加载：新增作品使用 WebP 640 / 1200 / 1920 三档响应式资源与 `srcset`
 - 现代 CSS：`@supports (animation-timeline: view())` 滚动驱动细线生长，不支持时自动回退
@@ -87,6 +89,6 @@ landscape-portfolio/
 - Hero 视频：`public/videos/hero.mp4`，失败时自动回退为 CSS 水墨背景
 - 背景音乐：《太聪明》，`public/audio/music.mp3`
 - 头像：`public/images/avatar.jpg`
-- 新增项目：`文络 · 云拓`（园林建筑 / 文化景观）与 `感智 · 无障碍`（城市街道 / AI 感知设计）
-- AI 创作：图纸与彩平、场景渲染、角色设定、角色 · 视频四组
+- 新增项目：`文络 · 云拓`（园林建筑 / 文化景观）与 `感智 · 无障`（城市街道 / AI 感知设计）
+- AI 创作：图纸与彩平、场景渲染、短剧美术、角色设定、角色 · 视频五组
 - 分享封面：`public/images/og-cover.jpg`（1200 × 630）

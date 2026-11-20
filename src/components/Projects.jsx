@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { projects } from '../data/content.js'
 import Reveal from './Reveal.jsx'
 import SectionHeading from './decorations/SectionHeading.jsx'
@@ -15,13 +16,28 @@ export default function Projects() {
   const [galleryIndex, setGalleryIndex] = useState(0)
   const dialogRef = useRef(null)
   const closeRef = useRef(null)
+  const thumbsRef = useRef(null)
 
   const activeProject = projects[activeIndex]
   const activeCover = asImage(activeProject.cover)
   const openProject = openIndex === null ? null : projects[openIndex]
   const current = openProject ? asImage(openProject.images[galleryIndex]) : null
 
+  // 预览图与图集舞台共享 view-transition-name，支持时做共享元素放大
   const openProjectAt = (index) => {
+    const transition = typeof document.startViewTransition
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (transition === 'function' && !reduce && !dialogRef.current?.open) {
+      const handle = document.startViewTransition(() => {
+        flushSync(() => {
+          setOpenIndex(index)
+          setGalleryIndex(0)
+        })
+        dialogRef.current?.showModal()
+      })
+      handle.finished.catch(() => {})
+      return
+    }
     setOpenIndex(index)
     setGalleryIndex(0)
   }
@@ -58,6 +74,17 @@ export default function Projects() {
       window.removeEventListener('keydown', onKey)
     }
   }, [openProject])
+
+  // 图片较多时，让当前缩略图保持在可视范围内
+  useEffect(() => {
+    if (!openProject) return
+    const active = thumbsRef.current?.children[galleryIndex]
+    active?.scrollIntoView({
+      block: 'nearest',
+      inline: 'center',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    })
+  }, [galleryIndex, openProject])
 
   const handleDialogClick = (event) => {
     if (event.target === dialogRef.current) close()
@@ -144,6 +171,7 @@ export default function Projects() {
                       decoding='async'
                       fetchPriority={index === activeIndex ? 'high' : 'low'}
                       className={`${styles.previewImg} ${index === activeIndex ? styles.previewImgActive : ''}`}
+                      style={{ viewTransitionName: !openProject && index === activeIndex ? 'project-cover' : 'none' }}
                     />
                   )
                 })}
@@ -179,7 +207,7 @@ export default function Projects() {
         aria-label={openProject ? openProject.title : '项目图集'}
       >
         {openProject && current && (
-          <div className={styles.panel}>
+          <div className={styles.panel} data-lenis-prevent>
             <div className={styles.panelHead}>
               <div>
                 <p className={styles.panelCat}>{openProject.category}</p>
@@ -211,7 +239,10 @@ export default function Projects() {
                   height={current.height}
                   alt={`${openProject.title} - ${current.label}`}
                   decoding='async'
-                  style={{ backgroundImage: `url(${current.thumb || current.src})` }}
+                  style={{
+                    backgroundImage: `url(${current.thumb || current.src})`,
+                    viewTransitionName: 'project-cover',
+                  }}
                 />
                 <p className={styles.caption}>
                   {current.label}
@@ -229,7 +260,7 @@ export default function Projects() {
               </button>
             </div>
 
-            <div className={styles.thumbs}>
+            <div className={styles.thumbs} ref={thumbsRef} data-lenis-prevent>
               {openProject.images.map((image, index) => {
                 const item = asImage(image)
                 return (
