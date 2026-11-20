@@ -168,17 +168,46 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 13px 26px;
+  padding: 13px 18px 13px 26px;
   border: 1px solid var(--line);
   background: var(--glass);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   transition: border-color 0.35s, background 0.35s;
 }
 
-.social:hover {
+.social:hover,
+.social:focus-visible {
   border-color: rgba(107, 155, 122, 0.4);
   background: rgba(107, 155, 122, 0.08);
+}
+
+.socialDone {
+  border-color: rgba(163, 201, 168, 0.6);
+  background: rgba(107, 155, 122, 0.14);
+}
+
+.socialCopy {
+  margin-left: 4px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  transition: color 0.3s;
+}
+
+.social:hover .socialCopy {
+  color: var(--green-bright);
+}
+
+.socialDone .socialCopy {
+  color: var(--green-bright);
 }
 
 .socialIcon {

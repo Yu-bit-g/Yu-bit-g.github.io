@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
 
+let instance = null
+
+export const pauseScroll = () => instance?.stop()
+export const resumeScroll = () => instance?.start()
+
 export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
@@ -10,6 +15,7 @@ export default function SmoothScroll() {
       syncTouch: false,
       anchors: true,
     })
+    instance = lenis
     let raf = 0
     const loop = (time) => {
       lenis.raf(time)
@@ -19,6 +25,7 @@ export default function SmoothScroll() {
     return () => {
       cancelAnimationFrame(raf)
       lenis.destroy()
+      instance = null
     }
   }, [])
   return null

@@ -12,13 +12,13 @@ const socialIcons = {
 }
 
 export default function Contact() {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState('')
 
-  const copyWechat = async () => {
+  const copy = async (key, value) => {
     try {
-      await navigator.clipboard.writeText(site.wechat)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2200)
+      await navigator.clipboard.writeText(value)
+      setCopied(key)
+      setTimeout(() => setCopied(''), 2200)
     } catch {
       /* 剪贴板不可用时静默失败 */
     }
@@ -58,13 +58,22 @@ export default function Contact() {
 
           <div className={styles.socials}>
             {site.socials.map((social) => (
-              <div className={styles.social} key={social.label}>
+              <button
+                type='button'
+                className={`${styles.social} ${copied === social.label ? styles.socialDone : ''}`}
+                key={social.label}
+                onClick={() => copy(social.label, social.value)}
+                aria-label={`复制${social.label}：${social.value}`}
+              >
                 <span className={styles.socialIcon}>
                   <Icon name={socialIcons[social.label] || 'mail'} size={17} />
                 </span>
                 <span className={styles.socialLabel}>{social.label}</span>
                 <span className={styles.socialValue}>{social.value}</span>
-              </div>
+                <span className={styles.socialCopy} aria-hidden='true'>
+                  {copied === social.label ? '已复制' : '复制'}
+                </span>
+              </button>
             ))}
           </div>
 
@@ -75,15 +84,18 @@ export default function Contact() {
             </a>
             <button
               type='button'
-              className={`${styles.cta} ${copied ? styles.ctaDone : ''}`}
-              onClick={copyWechat}
+              className={`${styles.cta} ${copied === '微信' ? styles.ctaDone : ''}`}
+              onClick={() => copy('微信', site.wechat)}
             >
-              {copied ? '已复制微信号' : '微信联系'}
-              <span className={styles.ctaArrow} aria-hidden='true'>{copied ? '✓' : '＋'}</span>
+              {copied === '微信' ? '已复制微信号' : '微信联系'}
+              <span className={styles.ctaArrow} aria-hidden='true'>{copied === '微信' ? '✓' : '＋'}</span>
             </button>
           </div>
 
-          <p className={styles.hint}>点击复制微信号 · 期待合作与实习机会</p>
+          <p className={styles.hint}>点击任意联系方式复制 · 期待合作与实习机会</p>
+          <span className='srOnly' role='status' aria-live='polite'>
+            {copied ? `${copied}已复制` : ''}
+          </span>
         </Reveal>
       </div>
 

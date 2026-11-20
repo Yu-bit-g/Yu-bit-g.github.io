@@ -17,6 +17,7 @@ export default function Projects() {
   const dialogRef = useRef(null)
   const closeRef = useRef(null)
   const thumbsRef = useRef(null)
+  const touchStart = useRef(null)
 
   const activeProject = projects[activeIndex]
   const activeCover = asImage(activeProject.cover)
@@ -85,6 +86,36 @@ export default function Projects() {
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     })
   }, [galleryIndex, openProject])
+
+  // 预取前后两张，方向键与滑动切换时不再空窗
+  useEffect(() => {
+    if (!openProject || openProject.images.length < 2) return
+    const total = openProject.images.length
+    const neighbors = [1, -1]
+    neighbors.forEach((delta) => {
+      const item = asImage(openProject.images[(galleryIndex + delta + total) % total])
+      const img = new Image()
+      img.sizes = '(max-width: 900px) 92vw, 75vw'
+      img.srcset = item.srcSet
+      img.src = item.src
+    })
+  }, [galleryIndex, openProject])
+
+  const onTouchStart = (event) => {
+    const touch = event.touches[0]
+    touchStart.current = { x: touch.clientX, y: touch.clientY }
+  }
+
+  const onTouchEnd = (event) => {
+    if (!touchStart.current || !openProject) return
+    const touch = event.changedTouches[0]
+    const dx = touch.clientX - touchStart.current.x
+    const dy = touch.clientY - touchStart.current.y
+    touchStart.current = null
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.2) return
+    const total = openProject.images.length
+    setGalleryIndex((i) => (i + (dx < 0 ? 1 : -1) + total) % total)
+  }
 
   const handleDialogClick = (event) => {
     if (event.target === dialogRef.current) close()
@@ -229,7 +260,7 @@ export default function Projects() {
               >
                 ‹
               </button>
-              <div className={styles.stage}>
+              <div className={styles.stage} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
                 <img
                   key={current.src}
                   src={current.src}

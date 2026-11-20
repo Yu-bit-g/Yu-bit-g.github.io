@@ -28,9 +28,10 @@ export default function App() {
   }, [])
   return (
     <>
+      <a className='skipLink' href='#main'>跳到主要内容</a>
       <SmoothScroll />
       <Navbar />
-      <main>
+      <main id='main' tabIndex={-1}>
         <Hero />
         <About />
         <Projects />
